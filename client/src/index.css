@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-950 text-gray-100;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .font-display {
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar       { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0f172a; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #475569; }
+}
+
+/* ✅ Google Maps Autocomplete FIXED */
+.pac-container {
+  position: absolute !important; /* 🔥 IMPORTANT */
+  z-index: 9999 !important;
+
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+  margin-top: 4px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4) !important;
+}
+
+.pac-item {
+  padding: 10px 14px !important;
+  color: #cbd5e1 !important;
+  border-top: 1px solid #334155 !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+}
+
+.pac-item:hover,
+.pac-item-selected {
+  background: #334155 !important;
+}
+
+.pac-item-query {
+  color: #f1f5f9 !important;
+}
+
+.pac-icon {
+  filter: invert(0.8);
+}
+
+.pac-logo::after {
+  display: none !important;
+}
+
+/* Date input fix */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
