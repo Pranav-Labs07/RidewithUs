@@ -23,7 +23,6 @@ export default function HomePage() {
   const [notif, setNotif] = useState(0);
 
   useEffect(() => {
-    // Available rides (others' rides, future only)
     ridesAPI
       .getAll({ limit: 8 })
       .then(({ data }) => setRides(data.rides || []))
@@ -126,8 +125,8 @@ export default function HomePage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
-          { label: "Rides Listed", value: "48K+", color: "text-orange-400" },
-          { label: "Active Users", value: "12K+", color: "text-green-400" },
+          { label: "Rides Listed", value: "4+", color: "text-orange-400" },
+          { label: "Active Users", value: "10+", color: "text-green-400" },
           { label: "Cities", value: "50+", color: "text-blue-400" },
           { label: "Avg Rating", value: "4.8 ★", color: "text-yellow-400" },
         ].map(({ label, value, color }) => (

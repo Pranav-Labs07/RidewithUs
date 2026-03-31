@@ -1,7 +1,3 @@
-/**
- * App.jsx — Root component with React Router v6
- */
-
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
@@ -22,10 +18,8 @@ import AdminDashboard  from './pages/admin/AdminDashboard';
 import AdminRides      from './pages/admin/AdminRides';
 import AdminUsers      from './pages/admin/AdminUsers';
 
-// Layout
 import Navbar          from './components/Navbar';
 
-// ── Route Guards ─────────────────────────────────────────────────
 const PrivateRoute = ({ children }) => {
   const { isLoggedIn, loading } = useAuth();
   if (loading) return <FullPageLoader />;
@@ -54,7 +48,6 @@ const FullPageLoader = () => (
   </div>
 );
 
-// ── App Layout ───────────────────────────────────────────────────
 const AppLayout = ({ children }) => {
   const { isLoggedIn } = useAuth();
   return (
@@ -67,7 +60,6 @@ const AppLayout = ({ children }) => {
   );
 };
 
-// ── Root ─────────────────────────────────────────────────────────
 export default function App() {
   return (
     <BrowserRouter>

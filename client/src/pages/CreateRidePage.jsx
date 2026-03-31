@@ -43,7 +43,6 @@ export default function CreateRidePage() {
     notes: "",
   });
 
-  // ✅ Controlled inputs for locations
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
 
@@ -52,7 +51,7 @@ export default function CreateRidePage() {
   const fromRef = useRef(null);
   const toRef = useRef(null);
 
-  // ✅ Stable autocomplete
+
   const initAC = useCallback(() => {
     [fromRef, toRef].forEach((ref) => {
       if (ref.current && !ref.current._autocomplete) {
@@ -119,14 +118,14 @@ export default function CreateRidePage() {
   };
 
   const ic =
-    "w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 text-sm focus:outline-none focus:border-orange-500";
+    "w-full bg-gray-950 border border-gray-700 rounded-xl px-4 py-3 text-gray-100 text-sm focus:outline-none focus:border-orange-500 ";
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold text-white mb-5">Offer a Ride</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* ✅ Vehicle Type */}
+        {/*  Vehicle Type */}
         <div>
           <label className="text-xs text-gray-500 uppercase mb-2 block">
             Vehicle Type
@@ -173,7 +172,7 @@ export default function CreateRidePage() {
           ref={toRef}
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
-          placeholder="Destination"
+          placeholder= "Destination"
           className={ic}
         />
 
