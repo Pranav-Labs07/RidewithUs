@@ -19,10 +19,9 @@ export default function ChatPage() {
   const [loadingMsgs, setLoadingMsgs] = useState(false);
   const bottomRef = useRef(null);
   const typingTimer = useRef(null);
-  const activeRef = useRef(active); // keep ref current for socket callbacks
+  const activeRef = useRef(active);
   activeRef.current = active;
 
-  // Load conversations
   const loadConvos = useCallback(() => {
     messagesAPI
       .getConversations()
@@ -39,14 +38,11 @@ export default function ChatPage() {
     loadConvos();
   }, [loadConvos]);
 
-  // Load messages when active chat changes
   useEffect(() => {
     if (!active) return;
 
     setLoadingMsgs(true);
     setMessages([]);
-
-    // Find other user from conversations
     const convo = convos.find((c) => String(c.bookingId) === String(active));
     if (convo) {
       setOtherUser(convo.otherUser);
@@ -60,15 +56,11 @@ export default function ChatPage() {
       .catch(() => toast.error("Could not load messages"))
       .finally(() => setLoadingMsgs(false));
 
-    // Join socket room for this booking
     socketService.joinBooking(active);
 
-    // ── KEY FIX: single handler — message comes from socket room broadcast
-    // Both sender and receiver get this ONE event. No optimistic adds.
     const handleNew = (msg) => {
       if (String(msg.bookingId) !== String(activeRef.current)) return;
       setMessages((prev) => {
-        // De-duplicate by temp _id or text+timestamp
         const already = prev.some(
           (m) =>
             (m._id && m._id === msg._id) ||
@@ -81,7 +73,7 @@ export default function ChatPage() {
         if (already) return prev;
         return [...prev, msg];
       });
-      loadConvos(); // update unread counts
+      loadConvos();
     };
 
     const handleTypingStart = ({ userId }) => {
@@ -103,7 +95,6 @@ export default function ChatPage() {
     };
   }, [active, convos.length]);
 
-  // Auto scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -113,12 +104,8 @@ export default function ChatPage() {
     const msgText = text.trim();
     setText("");
 
-    // 1. Emit via socket → room broadcasts to BOTH users (no optimistic add)
     socketService.sendMessage(active, msgText, receiverId);
-
-    // 2. Persist to DB silently (no duplicate from REST response)
     messagesAPI.send({ bookingId: active, text: msgText }).catch(console.error);
-
     socketService.typingStop(active);
   };
 
@@ -152,7 +139,6 @@ export default function ChatPage() {
       className="max-w-4xl mx-auto px-4 py-6 flex gap-4"
       style={{ height: "calc(100vh - 80px)" }}
     >
-      {/* Sidebar */}
       <div className="w-64 flex-shrink-0 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col overflow-hidden">
         <div className="p-4 border-b border-gray-800">
           <h2 className="font-display text-sm font-semibold text-gray-300">
@@ -199,7 +185,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Chat window */}
+
       {active ? (
         <div className="flex-1 bg-gray-900 border border-gray-800 rounded-2xl flex flex-col overflow-hidden min-w-0">
           {/* Header */}
@@ -220,7 +206,7 @@ export default function ChatPage() {
             </div>
           </div>
 
-          {/* Messages */}
+        
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {loadingMsgs ? (
               <div className="flex justify-center items-center h-full">
