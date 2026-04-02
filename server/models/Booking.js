@@ -19,38 +19,43 @@ const bookingSchema = new mongoose.Schema(
     },
 
     seatsBooked: { type: Number, required: true, min: 1, max: 4 },
-    totalAmount: { type: Number, required: true },
+    totalAmount:  { type: Number, required: true },
 
-    // ── Status flow: pending → confirmed → started → completed / cancelled ──
+    // ── Status flow ────────────────────────────────────────────────
+    // pending → confirmed → started → completed / cancelled / refunded
     status: {
       type: String,
       enum: ['pending', 'confirmed', 'started', 'completed', 'cancelled', 'refunded'],
       default: 'pending',
     },
-    cancelledBy: { type: String, enum: ['passenger', 'driver', 'admin', ''], default: '' },
+    cancelledBy:      { type: String, enum: ['passenger', 'driver', 'admin', ''], default: '' },
     cancellationNote: { type: String, default: '' },
 
-    // ── Payment ──────────────────────────────────────
+    // ── Payment (Razorpay) ─────────────────────────────────────────
     payment: {
-      status: { type: String, enum: ['pending', 'paid', 'refunded', 'failed'], default: 'pending' },
-      stripeSessionId: { type: String, default: '' },
-      stripePaymentId: { type: String, default: '' },
-      paidAt: { type: Date },
+      status: {
+        type: String,
+        enum: ['pending', 'paid', 'refunded', 'failed'],
+        default: 'pending',
+      },
+      razorpayOrderId:   { type: String, default: '' },
+      razorpayPaymentId: { type: String, default: '' },
+      paidAt:            { type: Date },
     },
 
-    // ── Rating (filled after completion) ─────────────
+    // ── Rating (filled by passenger after completion) ──────────────
     rating: {
-      score: { type: Number, min: 1, max: 5 },
+      score:   { type: Number, min: 1, max: 5 },
       comment: { type: String, default: '' },
       ratedAt: { type: Date },
     },
 
     pickupLocation: {
-      address: String,
+      address:     String,
       coordinates: [Number],
     },
     dropLocation: {
-      address: String,
+      address:     String,
       coordinates: [Number],
     },
   },
